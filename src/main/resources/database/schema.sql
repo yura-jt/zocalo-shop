@@ -42,7 +42,7 @@ CREATE TABLE carts
 CREATE TABLE cart_items
 (
     id         INT(10)                 NOT NULL AUTO_INCREMENT,
-    product_id INT(10)                 NOT NULL,
+    product_id INT(10)                 NOT NULL UNIQUE,
     quantity   INT(10)                 NOT NULL,
     created_on TIMESTAMP DEFAULT now() NOT NULL,
     cart_id    INT(10)                 NOT NULL,
