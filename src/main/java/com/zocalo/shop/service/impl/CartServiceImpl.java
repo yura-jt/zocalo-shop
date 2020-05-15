@@ -5,11 +5,13 @@ import com.zocalo.shop.exception.EntityNotFoundException;
 import com.zocalo.shop.repository.CartRepository;
 import com.zocalo.shop.service.CartService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
@@ -19,7 +21,12 @@ public class CartServiceImpl implements CartService {
     @Transactional(readOnly = true)
     public Cart getById(Integer id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
-        return optionalCart.orElseThrow(() -> new EntityNotFoundException("User was not found by id = " + id));
+        if (!optionalCart.isPresent()) {
+            String message = String.format("Cart with id = %s was not found", id);
+            log.warn(message);
+            throw new EntityNotFoundException(message);
+        }
+        return optionalCart.get();
     }
 
     @Override

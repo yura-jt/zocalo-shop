@@ -5,12 +5,14 @@ import com.zocalo.shop.exception.EntityNotFoundException;
 import com.zocalo.shop.repository.UserRepository;
 import com.zocalo.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -20,7 +22,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User getById(Integer id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElseThrow(() -> new EntityNotFoundException("User was not found by id = " + id));
+        if (!optionalUser.isPresent()) {
+            String message = String.format("User with id = %s was not found", id);
+            log.warn(message);
+            throw new EntityNotFoundException(message);
+        }
+        return optionalUser.get();
     }
 
     @Override
