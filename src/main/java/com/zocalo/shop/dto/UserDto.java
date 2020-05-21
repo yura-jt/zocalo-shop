@@ -1,8 +1,10 @@
 package com.zocalo.shop.dto;
 
 import com.zocalo.shop.entity.RoleType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,6 +14,8 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = {"password"})
 public class UserDto {
     private Long id;
