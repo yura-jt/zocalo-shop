@@ -8,16 +8,21 @@ import com.zocalo.shop.repository.UserRepository;
 import com.zocalo.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
 
@@ -61,4 +66,19 @@ public class UserServiceImpl implements UserService {
         }
         return optionalUser.get();
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findUserByEmail(username);
+        if (user == null) {
+            log.warn("Security exception: user was not found with credential:" + username);
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthority());
+    }
+
+    private List getAuthority() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
 }

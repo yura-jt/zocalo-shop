@@ -1,5 +1,13 @@
 package com.zocalo.shop.entity;
 
-public enum RoleType {
-    USER, ADMIN
+import org.springframework.security.core.GrantedAuthority;
+
+public enum RoleType implements GrantedAuthority {
+    USER, ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
+
 }
