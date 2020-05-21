@@ -1,18 +1,18 @@
 package com.zocalo.shop.service;
 
-import com.zocalo.shop.entity.Cart;
+import com.zocalo.shop.dto.CartItemDto;
 import com.zocalo.shop.entity.CartItem;
 
 import java.util.List;
 
 public interface CartItemService {
 
-    CartItem getById(Integer id);
+    CartItem getById(Long id);
 
-    List<CartItem> getAll();
+    CartItem save(CartItemDto cartItemDto);
 
-    void save(CartItem cartItem);
+    List<CartItem> findCartItemByCartId(Long cartId);
 
-    void delete(Integer id);
+    void delete(Long id);
 
 }

@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class CartItem {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
     @NotNull
     @Column(name = "quantity", nullable = false)

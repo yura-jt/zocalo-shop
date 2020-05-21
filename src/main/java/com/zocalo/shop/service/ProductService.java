@@ -1,17 +1,20 @@
 package com.zocalo.shop.service;
 
+import com.zocalo.shop.dto.ProductDto;
 import com.zocalo.shop.entity.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    Product getById(Integer id);
+    Product getById(Long id);
 
     List<Product> getAll();
 
-    void save(Product product);
+    Product save(ProductDto productDto);
 
-    void delete(Integer id);
+    Product update(Long id, ProductDto productDto);
+
+    void delete(Long id);
 
 }

@@ -1,13 +1,14 @@
 package com.zocalo.shop.service;
 
+import com.zocalo.shop.dto.CartDto;
 import com.zocalo.shop.entity.Cart;
 
 public interface CartService {
 
-    Cart getById(Integer id);
+    Cart getById(Long id);
 
-    void save(Cart cart);
+    Cart save(CartDto cartDto);
 
-    void delete(Integer id);
+    void delete(Long id);
 
 }

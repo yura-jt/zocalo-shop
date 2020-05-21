@@ -1,16 +1,19 @@
 package com.zocalo.shop.service;
 
+import com.zocalo.shop.dto.UserDto;
 import com.zocalo.shop.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    User getById(Integer id);
+    User getById(Long id);
 
-    void save(User user);
+    User save(UserDto userDto);
 
-    void delete(Integer id);
+    void delete(Long id);
+
+    User update(Long id, UserDto userDto);
 
     List<User> getAll();
 

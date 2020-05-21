@@ -1,7 +1,9 @@
 package com.zocalo.shop.service.impl;
 
+import com.zocalo.shop.dto.CartDto;
 import com.zocalo.shop.entity.Cart;
 import com.zocalo.shop.exception.EntityNotFoundException;
+import com.zocalo.shop.mapper.CartDtoMapper;
 import com.zocalo.shop.repository.CartRepository;
 import com.zocalo.shop.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
+    private final CartDtoMapper cartDtoMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public Cart getById(Integer id) {
+    public Cart getById(Long id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
         if (!optionalCart.isPresent()) {
             String message = String.format("Cart with id = %s was not found", id);
@@ -30,12 +33,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void save(Cart cart) {
-        cartRepository.save(cart);
+    public Cart save(CartDto cartDto) {
+        Cart cart = cartDtoMapper.toCart(cartDto);
+        return cartRepository.save(cart);
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         cartRepository.deleteById(id);
     }
 
