@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,9 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    private static final String ROLE_USER = "ROLE_USER";
+
     private final UserService userService;
     private final InputArgumentValidator<UserDto> validator;
     private final UserDtoMapper userDtoMapper;
@@ -61,7 +65,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping
+    @GetMapping({ROLE_ADMIN, ROLE_USER})
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = userService.getAll();
         List<UserDto> userDtos = userDtoMapper.toUserDtos(users);
@@ -75,6 +79,7 @@ public class UserController {
         return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
 
+    @Secured({ROLE_ADMIN})
     @PutMapping(value = "{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         validator.validateEntityForNull(userDto);
